@@ -1,0 +1,56 @@
+data:
+  manifest: data/manifest.json
+  image_root: data/images
+  input_channels: 3
+  crop_height: 1080
+  window_width: 128
+  stride: 112
+  sequence_length: 16
+  class_names: [MTL, CRC, GWA, SWA, BND, SLE, BRN, TEE, CAS, VAL, ESP, FLA]
+  gaussian_noise_std: 0.01
+  random_axial_shift: true
+
+model:
+  base_channels: 32
+  embedding_dim: 256
+  hidden_dim: 256
+  context_dim: 256
+  roi_size: 5
+  anchors:
+    - [8, 8]
+    - [16, 12]
+    - [24, 24]
+    - [36, 28]
+    - [56, 40]
+    - [80, 64]
+    - [100, 90]
+    - [120, 160]
+    - [128, 320]
+  score_threshold: 0.25
+  nms_iou_threshold: 0.5
+  max_detections_per_window: 100
+
+association:
+  iou_threshold: 0.30
+  novelty_threshold: 0.50
+  max_inactive_windows: 1
+  confidence_weighted_fusion: true
+
+training:
+  batch_size: 8
+  workers: 4
+  epochs_local: 100
+  epochs_sequential: 100
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  restart_period: 10
+  restart_multiplier: 2
+  box_weight: 5.0
+  objectness_weight: 1.0
+  class_weight: 1.0
+  novelty_weight: 1.0
+  gradient_clip_norm: 5.0
+  amp: true
+  freeze_backbone_in_stage2: true
+  seed: 42
+
